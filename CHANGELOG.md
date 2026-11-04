@@ -2,6 +2,7 @@
 
 ## 2026-11-04
 
+- Add Dash app skeleton and overview page
 - Add data preparation script and lightweight aggregates for the app
 
 ## 2026-11-03
