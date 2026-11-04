@@ -2,6 +2,7 @@
 
 ## 2026-11-04
 
+- Add charts and saved outputs to EDA notebook
 - Add when, why and where pages, airline filter and same-aircraft analysis
 - Add Dash app skeleton and overview page
 - Add data preparation script and lightweight aggregates for the app
