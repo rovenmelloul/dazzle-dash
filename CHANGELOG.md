@@ -2,6 +2,7 @@
 
 ## 2026-11-04
 
+- Add project README with results, setup instructions and app screenshots
 - Fix extreme weather definition on the why page
 - Add charts and saved outputs to EDA notebook
 - Add when, why and where pages, airline filter and same-aircraft analysis
