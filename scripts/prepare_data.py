@@ -54,7 +54,9 @@ def traduction_octobre(flights):
 def charger_vols(airports):
     colonnes = [
         "MONTH",
+        "DAY",
         "AIRLINE",
+        "TAIL_NUMBER",
         *COLONNES_AEROPORT,
         "SCHEDULED_DEPARTURE",
         "DEPARTURE_DELAY",
@@ -132,6 +134,27 @@ def agreger_aeroports(flights, airports):
     return infos.join(comptes, how="inner").rename_axis("CODE").reset_index()
 
 
+def agreger_avion_precedent(flights):
+    """Compare les vols selon que le vol précédent du même avion, le même jour, est arrivé en retard ou non."""
+    avion_jour = ["TAIL_NUMBER", "MONTH", "DAY"]
+    vols = flights[flights["ARRIVAL_DELAY"].notna() & flights["TAIL_NUMBER"].notna()].sort_values(
+        [*avion_jour, "SCHEDULED_DEPARTURE"], kind="stable"
+    )
+    groupes = vols.groupby(avion_jour)
+    vols = vols.assign(
+        precedent_en_retard=groupes["EN_RETARD"].shift(),
+        precedente_arrivee=groupes["DESTINATION_AIRPORT"].shift(),
+    )
+    # On garde les vols dont l'avion arrive bien de l'aéroport où il repart : sinon il manque un vol dans la chaîne.
+    suivis = vols[vols["precedente_arrivee"] == vols["ORIGIN_AIRPORT"]]
+    return (
+        suivis.astype({"precedent_en_retard": bool})
+        .groupby("precedent_en_retard")
+        .agg(vols_arrives=("EN_RETARD", "size"), vols_en_retard=("EN_RETARD", "sum"))
+        .reset_index()
+    )
+
+
 def verifier(fichiers):
     """Compare les résultats aux chiffres du notebook, et s'arrête au moindre écart."""
     resume = fichiers["resume"].set_index("categorie")["vols"]
@@ -140,6 +163,7 @@ def verifier(fichiers):
     causes = fichiers["causes"].set_index("cause")["minutes"]
     compagnies = fichiers["compagnies"].set_index("COMPAGNIE")
     aeroports = fichiers["aeroports"].set_index("CODE")
+    avion = fichiers["avion_precedent"].set_index("precedent_en_retard")
 
     controles = [
         ("vols au total", resume.sum(), 5_819_079),
@@ -158,6 +182,9 @@ def verifier(fichiers):
         ("vols au départ d'Atlanta", aeroports.loc["ATL", "vols_depart"], 379_424),
         ("% départs en retard à Baltimore", round(aeroports.loc["BWI", "departs_en_retard"] / aeroports.loc["BWI", "vols_partis"] * 100, 1), 24.1),
         ("% annulés à LaGuardia", round(aeroports.loc["LGA", "vols_annules"] / aeroports.loc["LGA", "vols_depart"] * 100, 2), 4.30),
+        ("vols suivis sur un même avion", avion["vols_arrives"].sum(), 4_312_434),
+        ("% en retard, vol précédent à l'heure", round(avion.loc[False, "vols_en_retard"] / avion.loc[False, "vols_arrives"] * 100, 1), 11.3),
+        ("% en retard, vol précédent en retard", round(avion.loc[True, "vols_en_retard"] / avion.loc[True, "vols_arrives"] * 100, 1), 64.5),
     ]
     for nom, obtenu, attendu in controles:
         if obtenu != attendu:
@@ -176,6 +203,7 @@ def main():
         "causes": totaliser_causes(flights),
         "compagnies": agreger(flights, ["COMPAGNIE"]),
         "aeroports": agreger_aeroports(flights, airports),
+        "avion_precedent": agreger_avion_precedent(flights),
     }
     verifier(fichiers)
 

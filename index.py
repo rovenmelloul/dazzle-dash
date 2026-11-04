@@ -5,6 +5,7 @@ Lancement : uv run python index.py
 
 from dash import Input, Output
 
+import callbacks  # noqa: F401 (l'import suffit à enregistrer les callbacks)
 from app import app
 from layout import PAGES, page_introuvable, racine
 

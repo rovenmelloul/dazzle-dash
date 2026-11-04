@@ -81,7 +81,7 @@ h2 {
   padding: 1.25rem;
 }
 
-section.carte {
+.page > div > section.carte {
   margin-top: 1rem;
 }
 
@@ -132,8 +132,113 @@ section.carte {
   margin-top: 1rem;
 }
 
-.bouton-suite,
-.bouton-suite:hover {
+.bouton-suite {
   background: var(--accent);
   border-color: var(--accent);
+  margin-top: 0.5rem;
+}
+
+h3 {
+  color: var(--texte-secondaire);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.carte-pleine {
+  height: 100%;
+}
+
+/* !important : avec responsive=True, Dash écrit height: 100% directement sur l'élément. */
+.graphique-carte {
+  height: clamp(300px, 62vw, 480px) !important;
+}
+
+.phrase {
+  color: var(--texte-secondaire);
+  margin-bottom: 0.75rem;
+  max-width: 44rem;
+}
+
+.filtre {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.filtre-libelle {
+  font-weight: 500;
+}
+
+.filtre-choix {
+  max-width: 18rem;
+}
+
+.liste-causes {
+  color: var(--texte-secondaire);
+  font-size: 0.875rem;
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+}
+
+.liste-causes li {
+  margin-bottom: 0.4rem;
+}
+
+.liste-causes strong {
+  color: var(--texte);
+  font-weight: 600;
+}
+
+.a-retenir {
+  border-left: 4px solid var(--accent);
+}
+
+.a-retenir ul {
+  margin-bottom: 0.75rem;
+  padding-left: 1.1rem;
+}
+
+.a-retenir li {
+  margin-bottom: 0.4rem;
+}
+
+.tableau {
+  --bs-table-bg: transparent;
+  margin-bottom: 0;
+}
+
+.tableau th {
+  color: var(--texte-secondaire);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.nombre {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.bouton-suite:hover {
+  background: #184f94;
+  border-color: #184f94;
+}
+
+/* Le contour de focus reste visible au clavier sur tous les éléments cliquables. */
+a:focus-visible,
+button:focus-visible,
+select:focus-visible,
+.bouton-suite:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
 }
