@@ -297,7 +297,7 @@ def page_pourquoi():
                                     ),
                                     explication_cause(
                                         "Météo extrême",
-                                        "conditions qui empêchent de voler, comme un ouragan.",
+                                        "conditions qui retardent ou empêchent un vol, comme un ouragan.",
                                         parts["Météo extrême"],
                                     ),
                                     explication_cause(
