@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-06
+
+- Add app launch script and share decimal formatting between pages and charts
+
 ## 2026-11-04
 
 - Add project README with results, setup instructions and app screenshots

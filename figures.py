@@ -41,8 +41,13 @@ NOMS_MOIS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "
 MOIS_COURTS = ["jan", "fév", "mar", "avr", "mai", "jun", "jul", "aoû", "sep", "oct", "nov", "déc"]
 
 
+def format_decimal(valeur, decimales=1):
+    """Nombre à virgule, à la française : 7.84 devient « 7,8 »."""
+    return f"{valeur:.{decimales}f}".replace(".", ",")
+
+
 def format_pct(valeur):
-    return f"{valeur:.1f}".replace(".", ",") + " %"
+    return format_decimal(valeur) + " %"
 
 
 def format_nombre(valeur):
@@ -238,7 +243,7 @@ def courbe_domino():
         )
     domino = minutes["Avion arrivé en retard"]
     # Seul le pic est écrit : à 6 h, l'étiquette toucherait la courbe météo, et la phrase au-dessus donne déjà la valeur.
-    etiqueter_point(figure, "20 h", domino[20], f"{domino[20]:.1f} min".replace(".", ","))
+    etiqueter_point(figure, "20 h", domino[20], format_decimal(domino[20]) + " min")
     mettre_en_forme(figure, 320)
     figure.update_layout(
         hovermode="x unified",

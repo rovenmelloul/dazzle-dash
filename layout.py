@@ -13,11 +13,11 @@ from data import (
     lien_taille_retard,
     minutes_par_vol_par_heure,
     parts_causes,
-    retard_selon_vol_precedent,
     plus_gros_aeroports,
     pourcentage,
     resume,
     retard_par_heure,
+    retard_selon_vol_precedent,
 )
 from figures import (
     COULEURS_CAUSES,
@@ -27,6 +27,7 @@ from figures import (
     barres_compagnies,
     carte_aeroports,
     courbe_domino,
+    format_decimal,
     format_nombre,
     format_pct,
 )
@@ -43,7 +44,7 @@ MENU = {
 
 
 def format_minutes(valeur):
-    return f"{valeur:.1f}".replace(".", ",") + " minutes"
+    return format_decimal(valeur) + " minutes"
 
 
 def menu():
@@ -442,7 +443,7 @@ def bloc_a_retenir():
 def page_avec_qui_et_ou():
     gros = plus_gros_aeroports()
     classement = classement_compagnies()
-    lien = f"{lien_taille_retard():.2f}".replace(".", ",")
+    lien = format_decimal(lien_taille_retard(), decimales=2)
     return html.Div([
         en_tete(
             "Qu'est-ce qui change le risque ?",

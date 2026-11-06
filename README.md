@@ -131,6 +131,12 @@ uv sync
 uv run python index.py
 ```
 
+Ou avec le script, qui arrête d'abord une ancienne copie de l'application restée ouverte sur le même port :
+
+```bash
+./scripts/run_app.sh
+```
+
 Ouvrir ensuite <http://127.0.0.1:8050>. Une connexion internet est nécessaire pour le style (Bootstrap) et le fond de la carte.
 
 ### Le notebook et la préparation des données
@@ -163,6 +169,7 @@ figures.py                   construction des graphiques
 data.py                      chargement des données et calcul des chiffres
 assets/style.css             style de l'application
 scripts/prepare_data.py      transforme les données brutes en petits fichiers
+scripts/run_app.sh           lance l'application
 data/processed/              petits fichiers lus par l'application
 notebooks/eda_flights.ipynb  exploration et nettoyage des données
 ```
